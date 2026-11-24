@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udari Malshika | Full Stack Developer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fbf9f2',
+                            100: '#f5efe0',
+                            200: '#e8dcc0',
+                            300: '#d7c296',
+                            400: '#e4d96f', /* Barium Yellow */
+                            500: '#2e6f40', /* Marine Green */
+                            600: '#1b4332', /* Deep Green */
+                            700: '#143326',
+                            800: '#704214', /* Sepia / Leather */
+                            900: '#4a2c11', /* Deep Leather */
+                        },
+                        theme: {
+                            deepgreen: '#0b1e16',
+                            marine: '#1b4332',
+                            barium: '#e4d96f',
+                            leather: '#5c3a21',
+                            sepia: '#704214',
+                            parchment: '#f6f1e7',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 28s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(35px, -45px) scale(1.12)' },
+                            '66%': { transform: 'translate(-25px, 25px) scale(0.92)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Subtle Topographic & Architectural Grid Background Texture */
+        .bg-topo-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 25%, rgba(228, 217, 111, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 80% 75%, rgba(46, 111, 64, 0.14) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23e4d96f' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M0 40 Q 20 20, 40 40 T 80 40'/%3E%3Cpath d='M0 20 Q 20 0, 40 20 T 80 20'/%3E%3Cpath d='M0 60 Q 20 40, 40 60 T 80 60'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .light-topo-pattern {
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(228, 217, 111, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(27, 67, 50, 0.08) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23704214' stroke-opacity='0.06' stroke-width='1'%3E%3Cpath d='M0 40 Q 20 20, 40 40 T 80 40'/%3E%3Cpath d='M0 20 Q 20 0, 40 20 T 80 20'/%3E%3Cpath d='M0 60 Q 20 40, 40 60 T 80 60'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Interactive Navigation-Synced Background Video Stage */
+        #nav-bg-video-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #nav-bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: sepia(0.28) contrast(1.06) saturate(0.85) brightness(0.75);
+            transform: scale(1.04);
+            transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+        }
+
+        .nav-video-tint {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(11, 30, 22, 0.72) 0%, rgba(27, 67, 50, 0.48) 48%, rgba(74, 44, 17, 0.62) 100%);
+            mix-blend-mode: multiply;
+        }
+
+        .nav-video-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 30%, rgba(9, 25, 19, 0.72) 100%);
+        }
+    </style>
+</head>
+<body class="bg-[#f7f2e8] text-[#231911] dark:bg-[#091913] dark:text-[#f4efe6] transition-colors duration-300 antialiased selection:bg-[#e4d96f] selection:text-[#0b1e16] overflow-x-hidden light-topo-pattern dark:bg-topo-pattern">
+
+    <!-- Interactive Background Video synced with Navigation Sections -->
+    <div id="nav-bg-video-layer" aria-hidden="true" class="opacity-35 dark:opacity-45">
+        <video
+            id="nav-bg-video"
+            src="portfolio-video.mp4"
+            muted
+            playsinline
+            preload="auto"
+            loop
+        ></video>
+        <div class="nav-video-tint"></div>
+        <div class="nav-video-vignette"></div>
+    </div>
+
+    <!-- Subtle Floating Scene Cue Badge (Shows current nav section & video segment) -->
+    <div id="video-scene-indicator" class="fixed bottom-5 left-5 z-40 hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-2xl bg-[#0b1e16]/85 text-[#f4efe6] border border-[#e4d96f]/35 backdrop-blur-md shadow-xl text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-[#e4d96f] animate-pulse"></span>
+        <span>Scene:</span>
+        <strong id="video-scene-label" class="text-[#e4d96f]">00:00 • Overview</strong>
+        <span id="video-scene-time" class="text-[#d7c296]">[0.0s]</span>
+    </div>
+
+    <!-- Top Reading Progress Bar (Deep Green -> Marine Green -> Barium Yellow -> Sepia) -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1.5 bg-gradient-to-r from-[#1b4332] via-[#2e6f40] via-[#e4d96f] to-[#704214] z-50 transition-all duration-75" style="width: 0%"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Interactive Project Case Study Modal -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-[#091913]/80 backdrop-blur-md transition-opacity duration-300">
+        <div class="relative w-full max-w-2xl rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296] dark:border-[#2e6f40]/50 shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="project-modal-card">
+            <div class="p-6 sm:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <span id="modal-badge" class="inline-block px-3 py-1 rounded-full bg-[#e4d96f]/30 dark:bg-[#1b4332] text-[#5c3a21] dark:text-[#e4d96f] text-xs font-semibold mb-2"></span>
+                        <h3 id="modal-title" class="text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6]"></h3>
+                        <p id="modal-role" class="text-sm font-medium text-[#704214] dark:text-[#e4d96f] mt-1"></p>
+                    </div>
+                    <button id="close-modal-btn" aria-label="Close Modal" class="p-2 rounded-xl bg-[#efe7d6] dark:bg-[#163628] text-[#5c3a21] dark:text-[#e4d96f] hover:opacity-80 transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-[#704214] dark:text-[#d7c296] mb-1.5">Overview</h4>
+                        <p id="modal-desc" class="text-sm sm:text-base text-[#3b2c20] dark:text-[#d8d2c5] leading-relaxed"></p>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-[#f2eadb] dark:bg-[#132f23] border border-[#d7c296]/70 dark:border-[#2e6f40]/50">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-[#1b4332] dark:text-[#e4d96f] mb-2 flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                            <span>Key Engineering Highlights</span>
+                        </h4>
+                        <ul id="modal-highlights" class="space-y-2 text-sm text-[#2d2118] dark:text-[#e5dfd3] list-disc list-inside"></ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-[#704214] dark:text-[#d7c296] mb-2">Tech Stack</h4>
+                        <div id="modal-tech" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 inset-x-0 z-40 bg-[#f7f2e8]/85 dark:bg-[#091913]/85 backdrop-blur-md border-b border-[#dfd3bc] dark:border-[#1b4332]/70 transition-colors">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand / Logo -->
+            <a href="#home" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1b4332] via-[#2e6f40] to-[#704214] flex items-center justify-center text-[#e4d96f] font-bold text-lg shadow-md border border-[#e4d96f]/30 group-hover:scale-105 transition-transform">
+                    UM
+                </div>
+                <span class="font-bold text-lg tracking-tight text-[#1b4332] dark:text-[#f4efe6]">Udari<span class="text-[#704214] dark:text-[#e4d96f]">.dev</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-1 text-sm font-medium text-[#4a2c11] dark:text-[#d8d2c5]" id="desktop-nav">
+                <a href="#home" data-video-time="0.0" data-scene-label="00:00 • Intro Pose" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">Home</a>
+                <a href="#about" data-video-time="1.0" data-scene-label="00:01 • Sitting Down" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">About</a>
+                <a href="#terminal" data-video-time="2.0" data-scene-label="00:02 • Coding & CLI" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">Interactive CLI</a>
+                <a href="#skills" data-video-time="2.6" data-scene-label="00:02 • Deep Focus" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">Skills</a>
+                <a href="#projects" data-video-time="3.3" data-scene-label="00:03 • Project Flow" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">Projects</a>
+                <a href="#education" data-video-time="4.0" data-scene-label="00:04 • Standing & Ready" class="nav-link px-3.5 py-2 rounded-xl hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">Education</a>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2.5">
+                <button id="theme-toggle" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#143326] text-[#5c3a21] dark:text-[#e4d96f] hover:opacity-80 transition-colors border border-[#d7c296]/50 dark:border-[#2e6f40]/50">
+                    <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+
+                <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1b4332] hover:bg-[#2e6f40] text-[#e4d96f] text-sm font-semibold shadow-sm border border-[#e4d96f]/20 transition-all">
+                    <span>Hire Me</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+
+                <button id="mobile-menu-btn" aria-label="Open Menu" class="md:hidden p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#143326] text-[#5c3a21] dark:text-[#e4d96f]">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#fbf8f1] dark:bg-[#0d2219] border-b border-[#dfd3bc] dark:border-[#1b4332] px-4 pt-2 pb-6 space-y-2 shadow-xl">
+            <a href="#home" data-video-time="0.0" data-scene-label="00:00 • Intro Pose" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">Home</a>
+            <a href="#about" data-video-time="1.0" data-scene-label="00:01 • Sitting Down" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">About</a>
+            <a href="#terminal" data-video-time="2.0" data-scene-label="00:02 • Coding & CLI" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">Interactive CLI</a>
+            <a href="#skills" data-video-time="2.6" data-scene-label="00:02 • Deep Focus" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">Skills</a>
+            <a href="#projects" data-video-time="3.3" data-scene-label="00:03 • Project Flow" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">Projects</a>
+            <a href="#education" data-video-time="4.0" data-scene-label="00:04 • Standing & Ready" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#231911] dark:text-[#f4efe6] hover:bg-[#efe7d6] dark:hover:bg-[#163628]">Education &amp; Activities</a>
+            <a href="#contact" data-video-time="4.0" data-scene-label="00:04 • Connect" class="nav-link block px-4 py-3 rounded-xl text-base font-medium text-[#1b4332] dark:text-[#e4d96f] bg-[#e4d96f]/30 dark:bg-[#1b4332]">Contact Me</a>
+        </div>
+    </header>
+
+    <main class="pt-16">
+        <!-- Hero Section with Interactive Parallax Visual Elements & Earthy Luxury Palette -->
+        <section id="home" class="relative overflow-hidden py-16 sm:py-24 lg:py-28">
+            <!-- Interactive Mouse-Tracking Parallax Decorative Elements -->
+            <div id="parallax-layer" class="absolute inset-0 pointer-events-none overflow-hidden">
+                <!-- Deep Green & Marine Green Blobs -->
+                <div data-speed="0.03" class="parallax-el absolute top-8 left-8 w-80 h-80 bg-[#2e6f40]/25 rounded-full filter blur-3xl animate-blob"></div>
+                <!-- Barium Yellow Glow -->
+                <div data-speed="-0.04" class="parallax-el absolute top-24 right-12 w-72 h-72 bg-[#e4d96f]/25 rounded-full filter blur-3xl animate-blob" style="animation-delay: 2s;"></div>
+                <!-- Sepia & Leather Warmth -->
+                <div data-speed="0.02" class="parallax-el absolute -bottom-12 left-1/3 w-80 h-80 bg-[#704214]/25 rounded-full filter blur-3xl animate-blob" style="animation-delay: 4s;"></div>
+
+                <!-- Interactive Floating Geometric Blueprint Illustration (SVG) -->
+                <svg data-speed="-0.025" class="parallax-el hidden md:block absolute top-16 right-[42%] w-40 h-40 text-[#704214]/20 dark:text-[#e4d96f]/15 animate-spin-slow" viewBox="0 0 200 200" fill="none">
+                    <circle cx="100" cy="100" r="88" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 6"/>
+                    <circle cx="100" cy="100" r="64" stroke="currentColor" stroke-width="1"/>
+                    <polygon points="100,20 170,140 30,140" stroke="currentColor" stroke-width="1" fill="none"/>
+                </svg>
+
+                <!-- Floating Code Frame Graphic -->
+                <div data-speed="0.04" class="parallax-el hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#fbf8f1]/70 dark:bg-[#132f23]/70 backdrop-blur-md border border-[#d7c296]/50 dark:border-[#2e6f40]/50 text-xs font-mono text-[#5c3a21] dark:text-[#e4d96f] absolute bottom-16 left-12 shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-[#e4d96f]"></span>
+                    <span>&lt;FullStack architecture="clean" /&gt;</span>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Content -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1b4332]/10 dark:bg-[#1b4332]/80 border border-[#2e6f40]/30 dark:border-[#e4d96f]/30 text-[#1b4332] dark:text-[#e4d96f] text-xs sm:text-sm font-semibold shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-[#2e6f40] dark:bg-[#e4d96f] animate-ping"></span>
+                            <span>Available for Software Engineering Internships</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#1b4332] dark:text-[#f4efe6] leading-[1.12]">
+                            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#1b4332] via-[#704214] to-[#2e6f40] dark:from-[#e4d96f] dark:via-[#d7c296] dark:to-[#4ea868]">Udari Malshika</span>
+                        </h1>
+
+                        <!-- Dynamic Typewriter Role -->
+                        <div class="h-8 flex items-center justify-center lg:justify-start">
+                            <p class="text-lg sm:text-xl font-mono font-semibold text-[#5c3a21] dark:text-[#d7c296]">
+                                &gt; <span id="typewriter-text" class="text-[#1b4332] dark:text-[#e4d96f]"></span><span class="animate-pulse">_</span>
+                            </p>
+                        </div>
+
+                        <p class="text-base text-[#4a3728] dark:text-[#cfc8b8] max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Third-year BSc (Hons) Software Engineering undergraduate at <span class="font-semibold text-[#1b4332] dark:text-[#e4d96f]">CINEC Campus</span> building production-ready full-stack web apps, native Android applications, and scalable backend architectures.
+                        </p>
+
+                        <!-- Interactive Stats Strip -->
+                        <div class="grid grid-cols-3 gap-3 max-w-md mx-auto lg:mx-0 pt-1">
+                            <div class="p-3 rounded-2xl bg-[#fbf8f1]/90 dark:bg-[#0e241b]/90 backdrop-blur-sm border border-[#d7c296]/70 dark:border-[#2e6f40]/50 text-center shadow-sm">
+                                <p class="text-xl sm:text-2xl font-extrabold text-[#1b4332] dark:text-[#e4d96f]">5+</p>
+                                <p class="text-xs text-[#704214] dark:text-[#d7c296] font-medium">Major Projects</p>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-[#fbf8f1]/90 dark:bg-[#0e241b]/90 backdrop-blur-sm border border-[#d7c296]/70 dark:border-[#2e6f40]/50 text-center shadow-sm">
+                                <p class="text-xl sm:text-2xl font-extrabold text-[#2e6f40] dark:text-[#74c69d]">15+</p>
+                                <p class="text-xs text-[#704214] dark:text-[#d7c296] font-medium">Technologies</p>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-[#fbf8f1]/90 dark:bg-[#0e241b]/90 backdrop-blur-sm border border-[#d7c296]/70 dark:border-[#2e6f40]/50 text-center shadow-sm">
+                                <p class="text-xl sm:text-2xl font-extrabold text-[#704214] dark:text-[#e4d96f]">24h</p>
+                                <p class="text-xs text-[#704214] dark:text-[#d7c296] font-medium">IEEEXtreme 20.0</p>
+                            </div>
+                        </div>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-2">
+                            <a href="#projects" class="px-6 py-3.5 rounded-2xl bg-[#1b4332] hover:bg-[#2e6f40] text-[#e4d96f] font-semibold shadow-lg shadow-[#1b4332]/25 border border-[#e4d96f]/20 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                                <span>Explore Projects</span>
+                                <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+                            </a>
+                            <button onclick="downloadSummaryCV()" class="px-5 py-3.5 rounded-2xl bg-[#704214] hover:bg-[#5c3a21] text-[#fbf8f1] font-semibold shadow-sm hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                                <i data-lucide="download" class="w-4 h-4 text-[#e4d96f]"></i>
+                                <span>Download CV</span>
+                            </button>
+                            <a href="#contact" class="px-5 py-3.5 rounded-2xl bg-[#fbf8f1] dark:bg-[#132f23] border border-[#d7c296] dark:border-[#2e6f40] hover:border-[#704214] dark:hover:border-[#e4d96f] text-[#1b4332] dark:text-[#f4efe6] font-semibold shadow-sm hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                                <span>Contact</span>
+                            </a>
+                        </div>
+
+                        <!-- Quick Social & Direct Info -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-5 pt-2 text-sm text-[#5c3a21] dark:text-[#d7c296]">
+                            <button onclick="copyText('Udarimalshika2@gmail.com', 'Email address')" class="flex items-center gap-1.5 hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                                <span>Udarimalshika2@gmail.com</span>
+                            </button>
+                            <button onclick="copyText('+94 729207699', 'Phone number')" class="flex items-center gap-1.5 hover:text-[#1b4332] dark:hover:text-[#e4d96f] transition-colors">
+                                <i data-lucide="phone" class="w-4 h-4"></i>
+                                <span>+94 729207699</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Portrait Card with Uploaded Picture (IMG_2794new.jpg) & Leather/Barium Frame -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div id="tilt-card" class="relative w-72 sm:w-80 md:w-96 group transition-transform duration-200 ease-out" style="transform-style: preserve-3d;">
+                            <!-- Decorative backdrop aura in Marine Green, Barium Yellow & Sepia -->
+                            <div class="absolute -inset-3 rounded-[2.25rem] bg-gradient-to-tr from-[#1b4332] via-[#e4d96f] to-[#704214] opacity-40 blur-xl group-hover:opacity-65 transition-opacity duration-500"></div>
+                            <div class="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-[#704214]/30 to-[#2e6f40]/30 rotate-3 scale-105 border border-[#e4d96f]/40 transition-transform duration-300 group-hover:rotate-6"></div>
+                            
+                            <!-- Portrait Image Container -->
+                            <div class="relative rounded-[2rem] overflow-hidden bg-[#ebe1ce] dark:bg-[#132f23] border-4 border-[#d7c296] dark:border-[#704214] shadow-2xl aspect-[4/5]">
+                                <img 
+                                    src="IMG_2794new.jpg" 
+                                    alt="Udari Malshika - Full Stack Developer" 
+                                    class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 sepia-[.06] contrast-[1.03]"
+                                    onerror="this.onerror=null; this.src='https://placehold.co/600x750/1b4332/e4d96f?text=Udari+Malshika';"
+                                >
+                                <!-- Warm Leather & Deep Green Glass Badge -->
+                                <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-2xl bg-[#fbf8f1]/90 dark:bg-[#0b1e16]/90 backdrop-blur-md border border-[#d7c296] dark:border-[#e4d96f]/30 shadow-lg flex items-center justify-between">
+                                    <div>
+                                        <p class="text-xs font-semibold text-[#704214] dark:text-[#e4d96f]">Software Engineering</p>
+                                        <p class="text-sm font-bold text-[#1b4332] dark:text-[#f4efe6]">CINEC Campus • 3rd Year</p>
+                                    </div>
+                                    <div class="w-9 h-9 rounded-xl bg-[#1b4332] text-[#e4d96f] border border-[#e4d96f]/30 flex items-center justify-center shadow-md">
+                                        <i data-lucide="code-2" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Floating Tech Pill 1 (Marine Green & Barium Yellow) -->
+                            <div class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-[#fbf8f1] dark:bg-[#132f23] border border-[#d7c296] dark:border-[#2e6f40] shadow-xl absolute -left-8 top-12 animate-float">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#2e6f40] dark:bg-[#e4d96f]"></span>
+                                <span class="text-xs font-bold text-[#1b4332] dark:text-[#f4efe6]">React &amp; Node.js</span>
+                            </div>
+
+                            <!-- Floating Tech Pill 2 (Leather / Sepia Accent) -->
+                            <div class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-[#fbf8f1] dark:bg-[#132f23] border border-[#d7c296] dark:border-[#704214] shadow-xl absolute -right-6 bottom-24 animate-float" style="animation-delay: 2s;">
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#704214] dark:bg-[#d7c296]"></span>
+                                <span class="text-xs font-bold text-[#5c3a21] dark:text-[#e4d96f]">Android • Java</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About & Core Strengths Section -->
+        <section id="about" class="py-16 sm:py-24 bg-[#efe7d6]/60 dark:bg-[#0c2118]/75 border-y border-[#dfd3bc] dark:border-[#1b4332]/70">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center space-y-4 mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">About Me</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#1b4332] dark:text-[#f4efe6]">Driven by Clean Architecture &amp; Problem Solving</h2>
+                    <p class="text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                        I am a dedicated Software Engineering undergraduate passionate about turning complex requirements into intuitive digital solutions. From crafting native Android apps with secure authentication to engineering full-stack enterprise construction platforms, I thrive in collaborative agile environments.
+                    </p>
+                </div>
+
+                <!-- 3 Core Pillars -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 hover:border-[#704214] dark:hover:border-[#e4d96f] hover:shadow-lg transition-all group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#1b4332] text-[#e4d96f] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="layers" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6] mb-2">Full-Stack Web Engineering</h3>
+                        <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                            Experienced in building responsive frontends with React.js, HTML5, CSS3, and JavaScript paired with RESTful Node.js, Express.js, and PHP backends.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 hover:border-[#704214] dark:hover:border-[#e4d96f] hover:shadow-lg transition-all group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#2e6f40] text-[#e4d96f] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="smartphone" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6] mb-2">Native Android Development</h3>
+                        <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                            Skilled in Java 11, Android SDK, Material Design 3, SQLite local persistence, and cryptographic security practices like SHA-256 hashing.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 hover:border-[#704214] dark:hover:border-[#e4d96f] hover:shadow-lg transition-all group">
+                        <div class="w-12 h-12 rounded-2xl bg-[#704214] text-[#e4d96f] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6] mb-2">Database &amp; Cloud Systems</h3>
+                        <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                            Proficient in relational and NoSQL data modeling using MySQL, PostgreSQL, SQLite, Firebase Authentication, and Cloud Firestore.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Developer CLI Terminal -->
+        <section id="terminal" class="py-16 sm:py-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-3 mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">Developer Sandbox</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-[#1b4332] dark:text-[#f4efe6]">Interactive CV Terminal</h2>
+                    <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8]">Type a command below or click a quick command pill to query my profile.</p>
+                </div>
+
+                <!-- Terminal Window styled in Deep Green, Leather & Barium Yellow -->
+                <div class="rounded-3xl overflow-hidden bg-[#07140f] border-2 border-[#704214] dark:border-[#2e6f40] shadow-2xl font-mono text-sm">
+                    <!-- Terminal Header -->
+                    <div class="px-4 py-3 bg-[#14291f] border-b border-[#2e6f40]/50 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-[#704214]"></span>
+                            <span class="w-3 h-3 rounded-full bg-[#e4d96f]"></span>
+                            <span class="w-3 h-3 rounded-full bg-[#2e6f40]"></span>
+                            <span class="ml-2 text-xs text-[#d7c296]">udari@cinec-portfolio: ~</span>
+                        </div>
+                        <button onclick="runTerminalCommand('clear')" class="text-xs text-[#e4d96f] hover:underline transition-colors">Clear</button>
+                    </div>
+
+                    <!-- Terminal Output Area -->
+                    <div id="terminal-output" class="p-5 h-64 overflow-y-auto space-y-2 text-[#e6e0d4] leading-relaxed">
+                        <div class="text-[#e4d96f]">Welcome to Udari Malshika's Interactive Portfolio CLI v2.0</div>
+                        <div class="text-[#a3b8ad]">Type <span class="text-[#e4d96f] font-semibold">'help'</span> to see available commands, or click a shortcut below.</div>
+                    </div>
+
+                    <!-- Quick Command Pills -->
+                    <div class="px-4 py-2.5 bg-[#0e2118] border-t border-[#2e6f40]/40 flex flex-wrap gap-2">
+                        <button onclick="runTerminalCommand('help')" class="px-2.5 py-1 rounded-lg bg-[#1b4332] hover:bg-[#704214] text-xs text-[#e4d96f] transition-colors">help</button>
+                        <button onclick="runTerminalCommand('about')" class="px-2.5 py-1 rounded-lg bg-[#1b4332] hover:bg-[#704214] text-xs text-[#e4d96f] transition-colors">about</button>
+                        <button onclick="runTerminalCommand('skills')" class="px-2.5 py-1 rounded-lg bg-[#1b4332] hover:bg-[#704214] text-xs text-[#e4d96f] transition-colors">skills</button>
+                        <button onclick="runTerminalCommand('projects')" class="px-2.5 py-1 rounded-lg bg-[#1b4332] hover:bg-[#704214] text-xs text-[#e4d96f] transition-colors">projects</button>
+                        <button onclick="runTerminalCommand('contact')" class="px-2.5 py-1 rounded-lg bg-[#1b4332] hover:bg-[#704214] text-xs text-[#e4d96f] transition-colors">contact</button>
+                    </div>
+
+                    <!-- Terminal Input Line -->
+                    <form id="terminal-form" class="px-4 py-3 bg-[#14291f] border-t border-[#2e6f40]/50 flex items-center gap-2">
+                        <span class="text-[#e4d96f] font-bold">$</span>
+                        <input id="terminal-input" type="text" autocomplete="off" placeholder="Enter command (e.g., skills, projects)..." class="w-full bg-transparent text-[#f4efe6] placeholder-[#789284] focus:outline-none">
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills Section -->
+        <section id="skills" class="py-16 sm:py-24 bg-[#efe7d6]/60 dark:bg-[#0c2118]/75 border-y border-[#dfd3bc] dark:border-[#1b4332]/70">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">Tech Stack</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#1b4332] dark:text-[#f4efe6] mt-1">Technical &amp; Soft Skills</h2>
+                    </div>
+                    <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] max-w-md">
+                        A versatile toolkit spanning systems programming, modern web stacks, mobile SDKs, and agile collaboration tools.
+                    </p>
+                </div>
+
+                <!-- Technical Categories Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    <!-- Programming Languages -->
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm hover:border-[#704214] dark:hover:border-[#e4d96f] transition-colors">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-2.5 rounded-xl bg-[#1b4332] text-[#e4d96f]">
+                                <i data-lucide="terminal" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#1b4332] dark:text-[#f4efe6]">Programming</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Java</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">JavaScript (ES6+)</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Python</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">PHP</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">C</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">C++</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">C#</span>
+                        </div>
+                    </div>
+
+                    <!-- Web Development -->
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm hover:border-[#704214] dark:hover:border-[#e4d96f] transition-colors">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-2.5 rounded-xl bg-[#2e6f40] text-[#e4d96f]">
+                                <i data-lucide="globe" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#1b4332] dark:text-[#f4efe6]">Web Development</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">React.js</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Node.js</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Express.js</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">HTML5</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">CSS3</span>
+                        </div>
+                    </div>
+
+                    <!-- Databases & Cloud -->
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm hover:border-[#704214] dark:hover:border-[#e4d96f] transition-colors">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-2.5 rounded-xl bg-[#704214] text-[#e4d96f]">
+                                <i data-lucide="server" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#1b4332] dark:text-[#f4efe6]">Databases &amp; Platforms</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">MySQL</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">PostgreSQL</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">SQLite</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Firebase Auth</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Cloud Firestore</span>
+                        </div>
+                    </div>
+
+                    <!-- Developer Tools -->
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm hover:border-[#704214] dark:hover:border-[#e4d96f] transition-colors">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-2.5 rounded-xl bg-[#5c3a21] text-[#e4d96f]">
+                                <i data-lucide="wrench" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#1b4332] dark:text-[#f4efe6]">Tools &amp; Design</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Android Studio</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">VS Code</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Git &amp; GitHub</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Figma</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-semibold border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Gradle</span>
+                        </div>
+                    </div>
+
+                    <!-- Management & Soft Skills -->
+                    <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm md:col-span-2 hover:border-[#704214] dark:hover:border-[#e4d96f] transition-colors">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="p-2.5 rounded-xl bg-[#1b4332] text-[#e4d96f]">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#1b4332] dark:text-[#f4efe6]">Agile Management &amp; Professional Strengths</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-[#e4d96f]/35 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#e4d96f] text-xs font-bold border border-[#704214]/30 dark:border-[#e4d96f]/30">ClickUp</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#e4d96f]/35 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#e4d96f] text-xs font-bold border border-[#704214]/30 dark:border-[#e4d96f]/30">Jira</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Logical Thinking</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Problem Solving</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Teamwork</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Communication</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Time Management</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Adaptability</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-[#f2eadb] dark:bg-[#143326] text-[#231911] dark:text-[#f4efe6] text-xs font-medium border border-[#d7c296]/60 dark:border-[#2e6f40]/50">Creativity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Section -->
+        <section id="projects" class="py-16 sm:py-24">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">Portfolio</span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#1b4332] dark:text-[#f4efe6] mt-1">Featured Engineering Projects</h2>
+                        <p class="text-xs text-[#5c3a21] dark:text-[#d7c296] mt-1">Click any project card to inspect technical highlights &amp; architecture.</p>
+                    </div>
+
+                    <!-- Interactive Filter Tabs -->
+                    <div class="flex flex-wrap gap-2" id="project-filters">
+                        <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#1b4332] text-[#e4d96f] shadow-sm transition-all">All Projects</button>
+                        <button data-filter="fullstack" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#ebe1ce] dark:bg-[#132f23] text-[#4a2c11] dark:text-[#d7c296] hover:opacity-80 transition-all">Full-Stack</button>
+                        <button data-filter="mobile" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#ebe1ce] dark:bg-[#132f23] text-[#4a2c11] dark:text-[#d7c296] hover:opacity-80 transition-all">Android Mobile</button>
+                        <button data-filter="frontend" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#ebe1ce] dark:bg-[#132f23] text-[#4a2c11] dark:text-[#d7c296] hover:opacity-80 transition-all">Frontend / Admin</button>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="projects-grid">
+                    
+                    <!-- Project 1: BuildLanka -->
+                    <article onclick="openProjectModal('buildlanka')" data-category="fullstack" class="project-card cursor-pointer rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/90 dark:border-[#2e6f40]/60 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="h-2 bg-gradient-to-r from-[#1b4332] via-[#2e6f40] to-[#e4d96f]"></div>
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#e4d96f]/35 dark:bg-[#1b4332] text-[#5c3a21] dark:text-[#e4d96f] text-xs font-semibold mb-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#704214] dark:bg-[#e4d96f]"></span>
+                                            Ongoing Client Project • Nawaloka Construction (Pvt) Ltd
+                                        </div>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6] group-hover:text-[#704214] dark:group-hover:text-[#e4d96f] transition-colors">
+                                            BuildLanka — Construction Management System
+                                        </h3>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#163628] text-[#1b4332] dark:text-[#e4d96f] shrink-0 group-hover:bg-[#1b4332] group-hover:text-[#e4d96f] transition-colors">
+                                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#704214] dark:text-[#e4d96f]">Role: Full-Stack Developer</p>
+
+                                <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                    Contributing to an enterprise construction management platform covering end-to-end project workflows, Bill of Quantities (BOQ), procurement, material tracking, and site progress monitoring. Engineered a rule-based NOM calculation module with server-side file storage.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">React.js</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Node.js</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Express.js</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">MySQL</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 2: Class Management System -->
+                    <article onclick="openProjectModal('classmgmt')" data-category="mobile" class="project-card cursor-pointer rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/90 dark:border-[#2e6f40]/60 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="h-2 bg-gradient-to-r from-[#2e6f40] to-[#1b4332]"></div>
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#2e6f40]/15 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#74c69d] text-xs font-semibold mb-2">
+                                            Individual Project • Native Android
+                                        </div>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6] group-hover:text-[#2e6f40] dark:group-hover:text-[#e4d96f] transition-colors">
+                                            Class Management System
+                                        </h3>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#163628] text-[#1b4332] dark:text-[#e4d96f] shrink-0 group-hover:bg-[#2e6f40] group-hover:text-[#e4d96f] transition-colors">
+                                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#2e6f40] dark:text-[#74c69d]">Role: Android Application Developer</p>
+
+                                <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                    Independently architected and developed a native Android class management solution featuring Material Design 3 XML layouts, offline-first SQLite database operations, persistent user sessions via Shared Preferences, and SHA-256 password hashing.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Java 11</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Android SDK</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Material Design 3</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">SQLite</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 3: DermaCare Slot Reservation System -->
+                    <article onclick="openProjectModal('dermacare')" data-category="fullstack" class="project-card cursor-pointer rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/90 dark:border-[#2e6f40]/60 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="h-2 bg-gradient-to-r from-[#704214] to-[#e4d96f]"></div>
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#704214]/15 dark:bg-[#4a2c11]/60 text-[#704214] dark:text-[#e4d96f] text-xs font-semibold mb-2">
+                                            Group Project • Healthcare &amp; Booking
+                                        </div>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6] group-hover:text-[#704214] dark:group-hover:text-[#e4d96f] transition-colors">
+                                            DermaCare Slot Reservation System
+                                        </h3>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#163628] text-[#1b4332] dark:text-[#e4d96f] shrink-0 group-hover:bg-[#704214] group-hover:text-[#e4d96f] transition-colors">
+                                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#704214] dark:text-[#e4d96f]">Role: Backend &amp; Database Developer</p>
+
+                                <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                    Engineered backend services handling patient appointment requests and automated email confirmations via Nodemailer. Integrated Firebase Authentication for secure access control and Cloud Firestore for real-time reservation persistence.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Node.js</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Firebase Auth</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Cloud Firestore</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Nodemailer</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 4: UrbanEats -->
+                    <article onclick="openProjectModal('urbaneats')" data-category="fullstack" class="project-card cursor-pointer rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/90 dark:border-[#2e6f40]/60 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="h-2 bg-gradient-to-r from-[#5c3a21] via-[#704214] to-[#2e6f40]"></div>
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#5c3a21]/15 dark:bg-[#4a2c11]/60 text-[#5c3a21] dark:text-[#d7c296] text-xs font-semibold mb-2">
+                                            Group Project • Food Delivery Platform
+                                        </div>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6] group-hover:text-[#704214] dark:group-hover:text-[#e4d96f] transition-colors">
+                                            UrbanEats
+                                        </h3>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#163628] text-[#1b4332] dark:text-[#e4d96f] shrink-0 group-hover:bg-[#5c3a21] group-hover:text-[#e4d96f] transition-colors">
+                                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#5c3a21] dark:text-[#d7c296]">Role: Ordering, Payment &amp; Tracking Developer</p>
+
+                                <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                    Developed interactive shopping cart mechanics, food ordering workflows, payment processing logic, and live order status tracking. Built secure database interactions connecting PHP 8+ with MySQL using PDO prepared statements.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">PHP 8+</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">MySQL &amp; PDO</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">JavaScript</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">HTML5 / CSS3</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Project 5: Zenvy -->
+                    <article onclick="openProjectModal('zenvy')" data-category="frontend" class="project-card cursor-pointer rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/90 dark:border-[#2e6f40]/60 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group md:col-span-2">
+                        <div>
+                            <div class="h-2 bg-gradient-to-r from-[#e4d96f] via-[#2e6f40] to-[#1b4332]"></div>
+                            <div class="p-6 sm:p-8 space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#e4d96f]/35 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#e4d96f] text-xs font-semibold mb-2">
+                                            E-Commerce Web Application
+                                        </div>
+                                        <h3 class="text-xl sm:text-2xl font-bold text-[#1b4332] dark:text-[#f4efe6] group-hover:text-[#704214] dark:group-hover:text-[#e4d96f] transition-colors">
+                                            Zenvy — E-Commerce Admin &amp; Inventory System
+                                        </h3>
+                                    </div>
+                                    <div class="p-2.5 rounded-xl bg-[#ebe1ce] dark:bg-[#163628] text-[#1b4332] dark:text-[#e4d96f] shrink-0 group-hover:bg-[#1b4332] group-hover:text-[#e4d96f] transition-colors">
+                                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-[#2e6f40] dark:text-[#e4d96f]">Role: Frontend &amp; Admin System Developer</p>
+
+                                <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed max-w-3xl">
+                                    Designed and built the Admin Dashboard and Inventory Management module, empowering store administrators with streamlined product catalog CRUD operations, real-time stock tracking, and intuitive administrative workflows.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-6 sm:pb-8 pt-2">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">JavaScript</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">HTML5</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">CSS3</span>
+                                <span class="px-2.5 py-1 rounded-lg bg-[#efe7d6] dark:bg-[#143326] text-[#231911] dark:text-[#e5dfd3] text-xs font-medium">Admin UI / UX</span>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education, Activities & Languages Section -->
+        <section id="education" class="py-16 sm:py-24 bg-[#efe7d6]/60 dark:bg-[#0c2118]/75 border-t border-[#dfd3bc] dark:border-[#1b4332]/70">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    <!-- Left Column: Education -->
+                    <div class="lg:col-span-6 space-y-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">Academic Background</span>
+                            <h2 class="text-3xl font-bold text-[#1b4332] dark:text-[#f4efe6] mt-1">Education</h2>
+                        </div>
+
+                        <div class="relative pl-8 border-l-2 border-[#704214]/40 dark:border-[#e4d96f]/40 space-y-8">
+                            <!-- Degree -->
+                            <div class="relative">
+                                <span class="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-[#1b4332] border-4 border-[#e4d96f] shadow"></span>
+                                <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm">
+                                    <span class="inline-block px-3 py-1 rounded-full bg-[#e4d96f]/40 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#e4d96f] text-xs font-bold mb-2">
+                                        Expected 2028 • Current 3rd Year
+                                    </span>
+                                    <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6]">BSc (Hons) in Software Engineering</h3>
+                                    <p class="text-sm font-medium text-[#5c3a21] dark:text-[#d7c296] mt-1">CINEC Campus, Sri Lanka</p>
+                                </div>
+                            </div>
+
+                            <!-- A/L -->
+                            <div class="relative">
+                                <span class="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-[#704214] border-4 border-[#fbf8f1] dark:border-[#091913]"></span>
+                                <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm">
+                                    <span class="inline-block px-3 py-1 rounded-full bg-[#ebe1ce] dark:bg-[#143326] text-[#5c3a21] dark:text-[#d7c296] text-xs font-bold mb-2">
+                                        Secondary Education
+                                    </span>
+                                    <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6]">G.C.E. Advanced Level — Technology Stream</h3>
+                                    <p class="text-sm font-medium text-[#5c3a21] dark:text-[#d7c296] mt-1">Completed with strong analytical and technical foundations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Activities & Languages -->
+                    <div class="lg:col-span-6 space-y-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-[#704214] dark:text-[#e4d96f]">Leadership &amp; Community</span>
+                            <h2 class="text-3xl font-bold text-[#1b4332] dark:text-[#f4efe6] mt-1">Activities &amp; Languages</h2>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- IEEE -->
+                            <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm flex items-start gap-4">
+                                <div class="p-3 rounded-2xl bg-[#1b4332] text-[#e4d96f] shrink-0">
+                                    <i data-lucide="award" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6]">IEEE CINEC Student Branch</h3>
+                                    <p class="text-xs font-semibold text-[#704214] dark:text-[#e4d96f] mb-2">Active Member</p>
+                                    <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                        Competed in <span class="font-semibold text-[#1b4332] dark:text-[#e4d96f]">IEEEXtreme 20.0 (2026)</span>, a 24-hour global competitive programming marathon, collaborating as a core member of the programming team.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Athletics -->
+                            <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm flex items-start gap-4">
+                                <div class="p-3 rounded-2xl bg-[#704214] text-[#e4d96f] shrink-0">
+                                    <i data-lucide="trophy" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-[#1b4332] dark:text-[#f4efe6]">CINEC Athletic Unit</h3>
+                                    <p class="text-xs font-semibold text-[#2e6f40] dark:text-[#74c69d] mb-1">Active Member</p>
+                                    <p class="text-sm text-[#4a3728] dark:text-[#cfc8b8] leading-relaxed">
+                                        Balancing technical rigor with collegiate sports discipline, endurance, and team spirit.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Languages Card -->
+                            <div class="p-6 rounded-3xl bg-[#fbf8f1] dark:bg-[#0e241b] border border-[#d7c296]/80 dark:border-[#2e6f40]/50 shadow-sm">
+                                <h3 class="text-sm font-bold uppercase tracking-wider text-[#5c3a21] dark:text-[#d7c296] mb-4 flex items-center gap-2">
+                                    <i data-lucide="languages" class="w-4 h-4 text-[#1b4332] dark:text-[#e4d96f]"></i>
+                                    <span>Languages Spoken</span>
+                                </h3>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="p-3 rounded-2xl bg-[#f2eadb] dark:bg-[#143326] text-center border border-[#d7c296]/60 dark:border-[#2e6f40]/50">
+                                        <p class="font-bold text-[#1b4332] dark:text-[#f4efe6] text-sm">Sinhala</p>
+                                        <p class="text-xs text-[#704214] dark:text-[#e4d96f] font-semibold mt-0.5">Native</p>
+                                    </div>
+                                    <div class="p-3 rounded-2xl bg-[#f2eadb] dark:bg-[#143326] text-center border border-[#d7c296]/60 dark:border-[#2e6f40]/50">
+                                        <p class="font-bold text-[#1b4332] dark:text-[#f4efe6] text-sm">English</p>
+                                        <p class="text-xs text-[#2e6f40] dark:text-[#74c69d] font-semibold mt-0.5">Intermediate</p>
+                                    </div>
+                                    <div class="p-3 rounded-2xl bg-[#f2eadb] dark:bg-[#143326] text-center border border-[#d7c296]/60 dark:border-[#2e6f40]/50">
+                                        <p class="font-bold text-[#1b4332] dark:text-[#f4efe6] text-sm">Tamil</p>
+                                        <p class="text-xs text-[#5c3a21] dark:text-[#d7c296] font-medium mt-0.5">Basic</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section in Rich Deep Green, Marine Green, Leather & Barium Yellow -->
+        <section id="contact" class="py-16 sm:py-24">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rounded-[2.5rem] bg-gradient-to-br from-[#0b1e16] via-[#1b4332] to-[#4a2c11] text-[#f4efe6] p-8 sm:p-12 lg:p-16 shadow-2xl border border-[#704214]/60 relative overflow-hidden">
+                    <!-- Subtle decorative glow -->
+                    <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-[#e4d96f]/20 blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-[#704214]/35 blur-3xl pointer-events-none"></div>
+
+                    <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                        <div class="lg:col-span-6 space-y-6">
+                            <span class="inline-block px-3.5 py-1.5 rounded-full bg-[#e4d96f]/15 border border-[#e4d96f]/30 text-[#e4d96f] text-xs font-semibold">
+                                Let's Connect
+                            </span>
+                            <h2 class="text-3xl sm:text-4xl font-bold leading-tight text-[#fbf8f1]">
+                                Looking for a motivated Software Engineering Intern?
+                            </h2>
+                            <p class="text-[#d8d2c5] text-sm sm:text-base leading-relaxed">
+                                I am actively seeking a Software Engineering Internship where I can apply my full-stack and mobile development experience, contribute to meaningful products, and grow alongside experienced engineers.
+                            </p>
+
+                            <div class="space-y-3 pt-2">
+                                <button onclick="copyText('Udarimalshika2@gmail.com', 'Email')" class="w-full sm:w-auto flex items-center gap-3 p-3.5 rounded-2xl bg-[#0b1e16]/50 hover:bg-[#0b1e16]/80 border border-[#e4d96f]/25 transition-colors text-left">
+                                    <div class="p-2 rounded-xl bg-[#e4d96f]/20 text-[#e4d96f]">
+        // 1. Reading Progress Bar, Active Navigation Spy & Navigation-Synced Video Segments
+        const progressBar = document.getElementById('scroll-progress');
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const bgVideo = document.getElementById('nav-bg-video');
+        const bgVideoLayer = document.getElementById('nav-bg-video-layer');
+        const sceneLabelEl = document.getElementById('video-scene-label');
+        const sceneTimeEl = document.getElementById('video-scene-time');
+
+        // Map each section ID to a specific video timestamp (seconds) and segment window
+        const sectionVideoMap = {
+            home:     { start: 0.0, end: 1.0, label: '00:00 • Intro Pose',      zoom: 'scale(1.04) translateX(0%)' },
+            about:    { start: 1.0, end: 2.0, label: '00:01 • Sitting Down',    zoom: 'scale(1.08) translateX(-2%)' },
+            terminal: { start: 2.0, end: 2.6, label: '00:02 • Coding & CLI',    zoom: 'scale(1.12) translateX(2%)' },
+            skills:   { start: 2.6, end: 3.3, label: '00:02 • Deep Focus',      zoom: 'scale(1.10) translateX(-1.5%)' },
+            projects: { start: 3.3, end: 4.0, label: '00:03 • Project Flow',    zoom: 'scale(1.14) translateX(1.5%)' },
+            education:{ start: 4.0, end: 4.8, label: '00:04 • Standing & Ready',zoom: 'scale(1.06) translateX(0%)' },
+            contact:  { start: 4.0, end: 4.8, label: '00:04 • Let\'s Connect',  zoom: 'scale(1.05) translateX(-1%)' }
+        };
+
+        let activeSegment = sectionVideoMap.home;
+        let lastTriggeredSection = '';
+
+        // Seek and smoothly play the video segment corresponding to a section
+        function triggerVideoSegment(sectionId) {
+            const seg = sectionVideoMap[sectionId];
+            if (!seg) return;
+
+            activeSegment = seg;
+            if (sceneLabelEl) sceneLabelEl.textContent = seg.label;
+            if (sceneTimeEl) sceneTimeEl.textContent = `[${seg.start.toFixed(1)}s]`;
+
+            if (bgVideo) {
+                bgVideo.style.transform = seg.zoom;
+            }
+
+            // Brief visual pulse on the background layer when switching navigation sections
+            if (bgVideoLayer) {
+                bgVideoLayer.classList.remove('opacity-35', 'dark:opacity-45');
+                bgVideoLayer.classList.add('opacity-60', 'dark:opacity-70');
+                setTimeout(() => {
+                    bgVideoLayer.classList.remove('opacity-60', 'dark:opacity-70');
+                    bgVideoLayer.classList.add('opacity-35', 'dark:opacity-45');
+                }, 700);
+            }
+
+            if (bgVideo && bgVideo.readyState >= 1) {
+                try {
+                    const duration = bgVideo.duration || 5;
+                    const safeStart = Math.min(seg.start, Math.max(0, duration - 0.3));
+                    bgVideo.currentTime = safeStart;
+                    const playPromise = bgVideo.play();
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(() => {
+                            // Autoplay may wait until user gesture; handled gracefully
+                        });
+                    }
+                } catch (err) {
+                    // Ignore seek errors on unbuffered streams
+                }
+            }
+        }
+
+        // Loop video cleanly within the active navigation segment's timeframe
+        if (bgVideo) {
+            bgVideo.addEventListener('timeupdate', () => {
+                if (!activeSegment) return;
+                const duration = bgVideo.duration || 5;
+                const maxEnd = Math.min(activeSegment.end, duration);
+                if (bgVideo.currentTime >= maxEnd) {
+                    bgVideo.currentTime = Math.min(activeSegment.start, Math.max(0, maxEnd - 0.2));
+                }
+            });
+        }
+
+        // Trigger video segment immediately when clicking any navigation link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const targetId = href.slice(1);
+                    lastTriggeredSection = targetId;
+                    triggerVideoSegment(targetId);
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            let current = '';
+            sections.forEach(sec => {
+                const sectionTop = sec.offsetTop - 150;
+                if (winScroll >= sectionTop) {
+                    current = sec.getAttribute('id');
+                }
+            });
+
+            if (current && current !== lastTriggeredSection) {
+                lastTriggeredSection = current;
+                triggerVideoSegment(current);
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('bg-[#e4d96f]/30', 'dark:bg-[#1b4332]', 'text-[#1b4332]', 'dark:text-[#e4d96f]');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('bg-[#e4d96f]/30', 'dark:bg-[#1b4332]', 'text-[#1b4332]', 'dark:text-[#e4d96f]');
+                }
+            });
+        });
+
+        // 2. Dynamic Typewriter Effect in Hero
+        const roles = [
+            "Full Stack Web Developer",
+            "Native Android App Developer",
+            "Software Engineering Undergraduate",
+            "Backend & Database Architect"
+        ];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById('typewriter-text');
+
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+            if (isDeleting) {
+                typewriterEl.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterEl.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let speed = isDeleting ? 45 : 85;
+            if (!isDeleting && charIndex === currentRole.length) {
+                speed = 1800;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                speed = 400;
+            }
+            setTimeout(typeEffect, speed);
+        }
+        typeEffect();
+
+        // 3. 3D Tilt Effect on Portrait Card
+        const tiltCard = document.getElementById('tilt-card');
+        if (tiltCard) {
+            tiltCard.addEventListener('mousemove', (e) => {
+                const rect = tiltCard.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
+                tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            tiltCard.addEventListener('mouseleave', () => {
+                tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        // 4. Interactive Project Modal System
+        const projectDetails = {
+            buildlanka: {
+                badge: "Ongoing Enterprise Client Project • Nawaloka Construction (Pvt) Ltd",
+                title: "BuildLanka — Construction Management System",
+                role: "Full-Stack Developer",
+                desc: "A comprehensive construction enterprise platform built to digitize site operations, Bill of Quantities (BOQ), procurement cycles, and material inventory tracking for Nawaloka Construction (Pvt) Ltd.",
+                highlights: [
+                    "Engineered a rule-based NOM (Net Order Material) calculation module for accurate resource estimation.",
+                    "Implemented end-to-end project workflow tracking, procurement approvals, and server-side document storage.",
+                    "Designed modular REST APIs with Express.js and relational schemas in MySQL with optional GPS/map hooks."
+                ],
+                tech: ["React.js", "Node.js", "Express.js", "MySQL", "Server-Side File Storage"]
+            },
+            classmgmt: {
+                badge: "Individual Academic Project • Native Android",
+                title: "Class Management System",
+                role: "Android Application Developer",
+                desc: "An offline-capable native Android application built from scratch to streamline student attendance, class scheduling, and academic record management.",
+                highlights: [
+                    "Crafted clean, accessible native interfaces using XML layouts and Material Design 3 guidelines.",
+                    "Implemented local SQLite database schemas with AndroidX and persistent user login states via Shared Preferences.",
+                    "Secured user credentials using cryptographic SHA-256 password hashing and verified logic with JUnit tests."
+                ],
+                tech: ["Java 11", "Android SDK", "Material Design 3", "SQLite", "AndroidX", "Shared Preferences", "JUnit"]
+            },
+            dermacare: {
+                badge: "Group Project • Healthcare & Appointment Platform",
+                title: "DermaCare Slot Reservation System",
+                role: "Backend & Database Developer",
+                desc: "A real-time dermatology clinic booking platform allowing patients to schedule consultation slots and receive instant automated confirmation emails.",
+                highlights: [
+                    "Built Node.js backend endpoints to validate appointment slot availability and prevent double-bookings.",
+                    "Integrated Nodemailer to dispatch automated booking confirmation emails to patients.",
+                    "Configured Firebase Authentication and Cloud Firestore for real-time schedule synchronization."
+                ],
+                tech: ["Node.js", "Firebase Authentication", "Cloud Firestore", "Nodemailer", "JavaScript", "HTML5/CSS3"]
+            },
+            urbaneats: {
+                badge: "Group Project • Food Ordering & Delivery",
+                title: "UrbanEats",
+                role: "Ordering, Payment & Tracking Developer",
+                desc: "A full-featured online food ordering web application enabling customers to browse menus, manage shopping carts, complete payments, and monitor live order progress.",
+                highlights: [
+                    "Developed dynamic shopping cart state management, checkout payment flows, and real-time order status tracking.",
+                    "Engineered secure PHP 8+ backend services connected to MySQL using PDO prepared statements to prevent SQL injection."
+                ],
+                tech: ["PHP 8+", "MySQL", "PDO", "JavaScript", "HTML5", "CSS3", "Apache"]
+            },
+            zenvy: {
+                badge: "E-Commerce Web Application",
+                title: "Zenvy — E-Commerce Admin & Inventory System",
+                role: "Frontend & Admin System Developer",
+                desc: "An administrative control center and inventory management interface tailored for e-commerce store operations.",
+                highlights: [
+                    "Built an intuitive Admin Dashboard for adding, editing, categorizing, and monitoring product stock levels.",
+                    "Focused on responsive layout ergonomics and rapid data filtering for daily inventory administration."
+                ],
+                tech: ["JavaScript", "HTML5", "CSS3", "Admin UI/UX"]
+            }
+        };
+
+        const modal = document.getElementById('project-modal');
+        const modalCard = document.getElementById('project-modal-card');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        function openProjectModal(key) {
+            const data = projectDetails[key];
+            if (!data) return;
+
+            document.getElementById('modal-badge').textContent = data.badge;
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-role').textContent = `Role: ${data.role}`;
+            document.getElementById('modal-desc').textContent = data.desc;
+
+            const highlightsEl = document.getElementById('modal-highlights');
+            highlightsEl.innerHTML = data.highlights.map(item => `<li>${item}</li>`).join('');
+
+            const techEl = document.getElementById('modal-tech');
+            techEl.innerHTML = data.tech.map(t => `<span class="px-3 py-1 rounded-xl bg-[#e4d96f]/30 dark:bg-[#1b4332] text-[#1b4332] dark:text-[#e4d96f] text-xs font-semibold border border-[#704214]/30 dark:border-[#e4d96f]/30">${t}</span>`).join('');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalCard.classList.remove('scale-95', 'opacity-0');
+                modalCard.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeProjectModal() {
+            modalCard.classList.remove('scale-100', 'opacity-100');
+            modalCard.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
+        closeModalBtn.addEventListener('click', closeProjectModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeProjectModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeProjectModal();
+        });
+
+        // 5. Interactive CLI Terminal Logic
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalForm = document.getElementById('terminal-form');
+        const terminalInput = document.getElementById('terminal-input');
+
+        const terminalResponses = {
+            help: `<span class="text-[#e4d96f]">Available commands:</span><br>
+                   • <span class="text-[#74c69d]">about</span>    - View academic &amp; personal summary<br>
+                   • <span class="text-[#74c69d]">skills</span>   - List core programming, web &amp; database stack<br>
+                   • <span class="text-[#74c69d]">projects</span> - List key software engineering projects<br>
+                   • <span class="text-[#74c69d]">contact</span>  - Show email &amp; phone details<br>
+                   • <span class="text-[#74c69d]">clear</span>    - Clear terminal output`,
+            about: `<span class="text-[#e4d96f] font-semibold">Udari Malshika</span> — 3rd Year BSc (Hons) Software Engineering Undergraduate at CINEC Campus (Expected 2028). Active IEEE CINEC Student Branch member &amp; IEEEXtreme 20.0 competitor.`,
+            skills: `<span class="text-[#e4d96f]">Languages:</span> Java, JavaScript, Python, PHP, C, C++, C#<br>
+                     <span class="text-[#e4d96f]">Web &amp; Mobile:</span> React.js, Node.js, Express.js, Android SDK, HTML5, CSS3<br>
+                     <span class="text-[#e4d96f]">Databases:</span> MySQL, PostgreSQL, SQLite, Firebase Auth, Cloud Firestore`,
+            projects: `1. <span class="text-[#e4d96f]">BuildLanka</span> (React, Node, MySQL) - Nawaloka Construction Client Project<br>
+                       2. <span class="text-[#74c69d]">Class Management System</span> (Java 11, Android SDK, SQLite)<br>
+                       3. <span class="text-[#d7c296]">DermaCare</span> (Node.js, Firebase, Nodemailer)<br>
+                       4. <span class="text-[#e4d96f]">UrbanEats</span> (PHP 8+, MySQL PDO)<br>
+                       5. <span class="text-[#74c69d]">Zenvy</span> (JavaScript E-Commerce Admin)`,
+            contact: `Email: <span class="text-[#e4d96f]">Udarimalshika2@gmail.com</span> | Phone: <span class="text-[#e4d96f]">+94 729207699</span>`
+        };
+
+        function runTerminalCommand(rawCmd) {
+            const cmd = rawCmd.trim().toLowerCase();
+            if (!cmd) return;
+
+            if (cmd === 'clear') {
+                terminalOutput.innerHTML = `<div class="text-[#a3b8ad]">Terminal cleared. Type <span class="text-[#e4d96f]">'help'</span> for commands.</div>`;
+                return;
+            }
+
+            const cmdLine = document.createElement('div');
+            cmdLine.innerHTML = `<span class="text-[#e4d96f] font-bold">$</span> <span class="text-[#f4efe6]">${cmd}</span>`;
+            terminalOutput.appendChild(cmdLine);
+
+            const resLine = document.createElement('div');
+            resLine.className = 'pl-4 text-slate-300 pb-2';
+            resLine.innerHTML = terminalResponses[cmd] || `<span class="text-rose-400">Command not found: '${cmd}'. Type 'help' for available commands.</span>`;
+            terminalOutput.appendChild(resLine);
+
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        terminalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            runTerminalCommand(terminalInput.value);
+            terminalInput.value = '';
+        });
+
+        // 6. Download Clean Text/Markdown CV Summary
+        function downloadSummaryCV() {
+            const cvContent = `UDARI MALSHIKA
+Full Stack Developer | Software Engineering Undergraduate
+Phone: +94 729207699 | Email: Udarimalshika2@gmail.com
+
+PERSONAL PROFILE
+Third-year BSc (Hons) Software Engineering undergraduate at CINEC Campus, with hands-on project experience in Android application development, full-stack web development, backend APIs, and database management. Seeking a Software Engineering Internship.
+
+EDUCATION
+- BSc (Hons) in Software Engineering - CINEC Campus (Expected 2028 | 3rd Year)
+- G.C.E. Advanced Level - Technology Stream
+
+TECHNICAL SKILLS
+- Programming: Java, Python, JavaScript, PHP, C, C++, C#
+- Web Development: HTML5, CSS3, React.js, Node.js, Express.js
+- Databases & Platforms: MySQL, SQLite, Firebase Authentication, Cloud Firestore, PostgreSQL
+- Tools: Android Studio, VS Code, Git, GitHub, Figma, Gradle, ClickUp, Jira
+
+KEY PROJECTS
+1. BuildLanka - Construction Management System (Client: Nawaloka Construction (Pvt) Ltd) | React.js, Node.js, Express.js, MySQL
+2. Class Management System (Android App) | Java 11, Android SDK, Material Design 3, SQLite, SHA-256
+3. DermaCare Slot Reservation System | Node.js, Firebase Auth, Cloud Firestore, Nodemailer
+4. UrbanEats Food Ordering Platform | PHP 8+, MySQL, PDO, JavaScript
+5. Zenvy E-Commerce Admin & Inventory System | JavaScript, HTML5, CSS3
+
+ACTIVITIES
+- IEEE CINEC Student Branch Active Member (IEEEXtreme 20.0 - 2026 Participant)
+- CINEC Athletic Unit Active Member
+`;
+            const blob = new Blob([cvContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Udari_Malshika_CV_Summary.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('CV Summary downloaded!');
+        }
+
+        // 7. Dark / Light Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlEl.classList.add('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 8. Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 9. Interactive Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-[#1b4332]', 'text-[#e4d96f]', 'shadow-sm');
+                    b.classList.add('bg-[#ebe1ce]', 'dark:bg-[#132f23]', 'text-[#4a2c11]', 'dark:text-[#d7c296]');
+                });
+                btn.classList.add('bg-[#1b4332]', 'text-[#e4d96f]', 'shadow-sm');
+                btn.classList.remove('bg-[#ebe1ce]', 'dark:bg-[#132f23]', 'text-[#4a2c11]', 'dark:text-[#d7c296]');
+
+                const filter = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 10. Toast Notification Helper
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'px-4 py-3 rounded-2xl bg-[#1b4332] text-[#e4d96f] text-sm font-medium shadow-xl border border-[#e4d96f]/40 flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0';
+            toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#e4d96f]"></span><span>${message}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 11. Copy to Clipboard Helper
+        function copyText(text, label) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(`${label} copied to clipboard!`);
+        }
+
+        // 12. Contact Form Submission Handler
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('sender-name').value.trim();
+            showToast(`Thank you, ${name}! Your message has been prepared.`);
+            this.reset();
+        });
+    </script>
+</body>
+</html>
