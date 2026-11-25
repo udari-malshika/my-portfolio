@@ -120,6 +120,15 @@
 
     <!-- Interactive Background Video synced with Navigation Sections -->
     <div id="nav-bg-video-layer" aria-hidden="true">
+        <video
+            id="nav-bg-video"
+            muted
+            playsinline
+            preload="auto"
+        >
+            <source src="portfolio-video.webm" type="video/webm">
+            <source src="portfolio-video.mp4" type="video/mp4">
+        </video>
         <div class="nav-video-tint"></div>
         <div class="nav-video-vignette"></div>
     </div>
@@ -254,11 +263,6 @@
                     
                     <!-- Left Content -->
                     <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1b4332]/10 dark:bg-[#1b4332]/80 border border-[#2e6f40]/30 dark:border-[#e4d96f]/30 text-[#1b4332] dark:text-[#e4d96f] text-xs sm:text-sm font-semibold shadow-sm">
-                            <span class="w-2 h-2 rounded-full bg-[#2e6f40] dark:bg-[#e4d96f] animate-ping"></span>
-                            <span>Available for Software Engineering Internships</span>
-                        </div>
-
                         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#1b4332] dark:text-[#f4efe6] leading-[1.12]">
                             Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#1b4332] via-[#704214] to-[#2e6f40] dark:from-[#e4d96f] dark:via-[#d7c296] dark:to-[#4ea868]">Udari Malshika</span>
                         </h1>
@@ -976,7 +980,7 @@
         const progressBar = document.getElementById('scroll-progress');
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
-        const bgVideo = null;
+        const bgVideo = document.getElementById('nav-bg-video');
         const sceneLabelEl = document.getElementById('video-scene-label');
         const sceneTimeEl = document.getElementById('video-scene-time');
 
