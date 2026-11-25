@@ -120,13 +120,6 @@
 
     <!-- Interactive Background Video synced with Navigation Sections -->
     <div id="nav-bg-video-layer" aria-hidden="true">
-        <video
-            id="nav-bg-video"
-            src="portfolio-video.mp4"
-            muted
-            playsinline
-            preload="auto"
-        ></video>
         <div class="nav-video-tint"></div>
         <div class="nav-video-vignette"></div>
     </div>
@@ -983,7 +976,7 @@
         const progressBar = document.getElementById('scroll-progress');
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
-        const bgVideo = document.getElementById('nav-bg-video');
+        const bgVideo = null;
         const sceneLabelEl = document.getElementById('video-scene-label');
         const sceneTimeEl = document.getElementById('video-scene-time');
 
